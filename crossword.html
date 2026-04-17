@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧩 Crossword Puzzle 🧩</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec; /* Light pink background */
+            color: #4a4a4a;
+            text-align: center;
+        }
+        header {
+            background-color: #e91e63; /* Deep pink for header */
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px solid #e91e63;
+        }
+        iframe {
+            border: 3px solid #e91e63;
+            margin: auto;
+            display: block;
+            width: 100%; /* Make iframe responsive */
+            max-width: 500px; /* Limit max width as per original request */
+            height: 500px;
+            border-radius: 8px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #c2185b;
+            font-weight: bold;
+        }
+        .code-display {
+            font-size: 3em;
+            color: #c2185b;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 3px dashed #e91e63;
+            border-radius: 15px;
+            background-color: #ffe0f0;
+            display: inline-block;
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #c2185b;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .back-button:hover {
+            background-color: #ad1457;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🧩 The Anniversary Crossword 🧩</h1>
+    </header>
+
+    <div class="container">
+        <p>Solve this puzzle to find another piece of our code!</p>
+        <iframe frameborder="0" src="https://crosswordlabs.com/embed/angewik"></iframe>
+        <p class="message">Once you've solved it, the code piece for this game is:</p>
+        <div class="code-display">E</div>
+        <a href="index.html" class="back-button">Back to Homepage</a>
+    </div>
+</body>
+</html>

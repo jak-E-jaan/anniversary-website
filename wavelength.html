@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Same Wavelength 🧠</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec; /* Light pink background */
+            color: #4a4a4a;
+            text-align: center;
+        }
+        header {
+            background-color: #e91e63; /* Deep pink for header */
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px solid #e91e63;
+        }
+        .question-card {
+            background-color: #ffe0f0;
+            border: 1px solid #e91e63;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .question-card p {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #c2185b;
+            font-weight: bold;
+        }
+        .question-card label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        .question-card input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .button-group {
+            margin-top: 20px;
+        }
+        .button-group button {
+            background-color: #e91e63;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 0 10px;
+        }
+        .button-group button:hover {
+            background-color: #c2185b;
+            transform: scale(1.05);
+        }
+        #results {
+            margin-top: 30px;
+            font-size: 1.4em;
+            color: #c2185b;
+            display: none; /* Hidden by default */
+        }
+        #results .code-display {
+            font-size: 3em;
+            color: #c2185b;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 3px dashed #e91e63;
+            border-radius: 15px;
+            background-color: #ffe0f0;
+            display: inline-block;
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #c2185b;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .back-button:hover {
+            background-color: #ad1457;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🧠 Are We On The Same Wavelength? 🧠</h1>
+    </header>
+
+    <div class="container">
+        <div id="quiz-section">
+            <p>Answer these questions as you think your partner would!</p>
+            <div class="question-card">
+                <p id="question-text">Question goes here</p>
+                <div id="options">
+                    <!-- Options will be dynamically loaded here -->
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="prev-button" style="display: none;">Previous</button>
+                <button id="next-button">Next</button>
+                <button id="submit-button" style="display: none;">Submit</button>
+            </div>
+        </div>
+
+        <div id="results" style="display: none;">
+            <p id="result-message"></p>
+            <p id="code-message" style="display: none;">Your code piece is:</p>
+            <div class="code-display" id="code-reward"></div>
+            <a href="index.html" class="back-button">Back to Homepage</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "How much do you like spontaneous plans? (1 = Not at all, 10 = Absolutely love them)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 7 // My answer: 8
+            },
+            {
+                question: "How organised are you? (1 = Chaotic, 10 = Perfectly structured)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 4 // My answer: 5
+            },
+            {
+                question: "How much do you enjoy surprises? (1 = Hate them, 10 = Love them)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 8 // My answer: 9
+            },
+            {
+                question: "How much do you value ‘me time’? (1 = Not important, 10 = Essential)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 7 // My answer: 8
+            },
+            {
+                question: "How much does a partner’s musical taste actually matter to you? (1 = Not at all, 10 = A lot)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 4 // My answer: 5
+            },
+            {
+                question: "Rate your cooking skills. (1 = Cannot cook, 10 = Chef level)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 6 // My answer: 7
+            },
+            {
+                question: "Rate your level of patience when waiting for the other person to get ready to leave. (1 = No patience, 10 = Infinite patience)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 5 // My answer: 6
+            },
+            {
+                question: "How much of a backseat driver are you when the other is driving? (1 = Not at all, 10 = Full control)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 2 // My answer: 3
+            },
+            {
+                question: "How much of a gift giver are you? (1 = Rarely, 10 = Love to give gifts)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 6 // My answer: 7
+            },
+            {
+                question: "How much would you want to have the superpower of reading the other person’s mind at all times? (1 = Not at all, 10 = Definitely)",
+                options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                answerIndex: 1 // My answer: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const submitButton = document.getElementById('submit-button');
+        const quizSection = document.getElementById('quiz-section');
+        const resultsSection = document.getElementById('results');
+        const resultMessage = document.getElementById('result-message');
+        const codeMessage = document.getElementById('code-message');
+        const codeReward = document.getElementById('code-reward');
+
+        function loadQuestion() {
+            const q = questions[currentQuestionIndex];
+            questionText.textContent = q.question;
+            optionsContainer.innerHTML = '';
+            q.options.forEach((option, index) => {
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'answer';
+                input.value = index;
+                input.checked = (userAnswers[currentQuestionIndex] === index);
+                input.addEventListener('change', (event) => {
+                    userAnswers[currentQuestionIndex] = parseInt(event.target.value);
+                });
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+
+            prevButton.style.display = currentQuestionIndex > 0 ? 'inline-block' : 'none';
+            nextButton.style.display = currentQuestionIndex < questions.length - 1 ? 'inline-block' : 'none';
+            submitButton.style.display = currentQuestionIndex === questions.length - 1 ? 'inline-block' : 'none';
+        }
+
+        function calculateScore() {
+            score = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].answerIndex) {
+                    score++;
+                }
+            }
+            displayResults();
+        }
+
+        function displayResults() {
+            quizSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+
+            let message = '';
+            let code = '';
+
+            // Adjusted scoring logic for 10 questions
+            if (score === questions.length) {
+                message = `Wow! You got all ${score} questions correct! We are perfectly in sync! 💖`;
+                code = 'V';
+            } else if (score >= questions.length - 2) { // 8 or more correct
+                message = `Amazing! You got ${score} out of ${questions.length} questions right! We're definitely on the same wavelength!`;
+                code = 'V';
+            } else if (score >= questions.length / 2) { // 5 or more correct
+                message = `Good job! You got ${score} out of ${questions.length} questions right. We're pretty close!`;
+                code = 'V';
+            } else {
+                message = `You got ${score} out of ${questions.length} questions right. Looks like we need to spend more time getting on the same wavelength! 😉`;
+                code = ''; // No code if score is too low
+            }
+
+            resultMessage.textContent = message;
+            if (code) {
+                codeMessage.style.display = 'block';
+                codeReward.textContent = code;
+            } else {
+                codeMessage.style.display = 'none';
+                codeReward.textContent = '';
+            }
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        });
+
+        submitButton.addEventListener('click', calculateScore);
+
+        // Initial load
+        loadQuestion();
+    </script>
+</body>
+</html>
