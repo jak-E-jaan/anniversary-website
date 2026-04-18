@@ -43,7 +43,7 @@
             cursor: pointer;
             animation: fall linear forwards;
             user-select: none; /* Prevent text selection */
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+            filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.3));
         }
         .score-board {
             margin-top: 20px;
@@ -135,13 +135,13 @@
     </header>
 
     <div class="score-board">
-        Score: <span id="score">0</span> | Time Left: <span id="timer">20</span>s
+        Score: <span id="score">0</span> | Time Left: <span id="timer">60</span>s
     </div>
 
     <div class="game-container" id="game-container">
         <div class="message-overlay" id="start-overlay">
             <p>Catch as many hearts as you can!</p>
-            <p>Goal: 15 hearts in 20 seconds</p>
+            <p>Goal: 10 hearts in 60 seconds</p>
             <button class="start-button" id="start-game-button">Start Game</button>
         </div>
 
@@ -165,10 +165,10 @@
         const startGameButton = document.getElementById('start-game-button');
 
         let score = 0;
-        let timeLeft = 20;
+        let timeLeft = 60;
         let gameInterval;
         let heartSpawnInterval;
-        const heartsToWin = 15; // Set the win condition
+        const heartsToWin = 10; // Set the win condition to 10 hearts
 
         function spawnHeart() {
             const heart = document.createElement('div');
@@ -198,7 +198,7 @@
 
         function startGame() {
             score = 0;
-            timeLeft = 20;
+            timeLeft = 60;
             scoreSpan.textContent = score;
             timerSpan.textContent = timeLeft;
             startOverlay.style.display = 'none';
@@ -221,7 +221,7 @@
         function endGame() {
             clearInterval(gameInterval);
             clearInterval(heartSpawnInterval);
-            
+
             // Remove any remaining hearts
             document.querySelectorAll('.heart').forEach(h => h.remove());
 
