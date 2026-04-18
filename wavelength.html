@@ -46,16 +46,39 @@
             color: #c2185b;
             font-weight: bold;
         }
+        #options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px; /* Space between options */
+            margin-top: 15px;
+        }
         .question-card label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            display: flex; /* Use flex for label content to align radio button and text */
+            align-items: center;
+            padding: 8px 12px;
+            border: 1px solid #ff99cc;
+            border-radius: 20px;
+            background-color: #fff0f5;
+            transition: all 0.2s ease;
             cursor: pointer;
+            margin: 0; /* Reset margin-bottom */
+            min-width: 40px; /* Ensure a minimum width for small numbers */
+            justify-content: center;
+        }
+        .question-card label:hover {
+            background-color: #ffccdc;
+            transform: translateY(-2px);
         }
         .question-card input[type="radio"] {
-            margin-right: 10px;
-            transform: scale(1.2);
+            margin-right: 8px; /* Space between radio and text */
+            transform: scale(1.1);
         }
+        .question-card input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #e91e63;
+        }
+
         .button-group {
             margin-top: 20px;
         }
@@ -140,59 +163,59 @@
     <script>
         const questions = [
             {
-                question: "How much do you like spontaneous plans? (1 = Not at all, 10 = Absolutely love them)",
+                question: "How much do you like spontaneous plans?<br>(1 = Not at all, 10 = Absolutely love them)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 7 // My answer: 8
             },
             {
-                question: "How organised are you? (1 = Chaotic, 10 = Perfectly structured)",
+                question: "How organised are you?<br>(1 = Chaotic, 10 = Perfectly structured)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 4 // My answer: 5
             },
             {
-                question: "How much do you enjoy surprises? (1 = Hate them, 10 = Love them)",
+                question: "How much do you enjoy surprises?<br>(1 = Hate them, 10 = Love them)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 8 // My answer: 9
             },
             {
-                question: "How much do you value ‘me time’? (1 = Not important, 10 = Essential)",
+                question: "How much do you value ‘me time’?<br>(1 = Not important, 10 = Essential)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 7 // My answer: 8
             },
             {
-                question: "How much does a partner’s musical taste actually matter to you? (1 = Not at all, 10 = A lot)",
+                question: "How much does a partner’s musical taste actually matter to you?<br>(1 = Not at all, 10 = A lot)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 4 // My answer: 5
             },
             {
-                question: "Rate your cooking skills. (1 = Cannot cook, 10 = Chef level)",
+                question: "Rate your cooking skills.<br>(1 = Cannot cook, 10 = Chef level)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 6 // My answer: 7
             },
             {
-                question: "Rate your level of patience when waiting for the other person to get ready to leave. (1 = No patience, 10 = Infinite patience)",
+                question: "Rate your level of patience when waiting for the other person to get ready to leave.<br>(1 = No patience, 10 = Infinite patience)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 5 // My answer: 6
             },
             {
-                question: "How much of a backseat driver are you when the other is driving? (1 = Not at all, 10 = Full control)",
+                question: "How much of a backseat driver are you when the other is driving?<br>(1 = Not at all, 10 = Full control)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 2 // My answer: 3
             },
             {
-                question: "How much of a gift giver are you? (1 = Rarely, 10 = Love to give gifts)",
+                question: "How much of a gift giver are you?<br>(1 = Rarely, 10 = Love to give gifts)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 6 // My answer: 7
             },
             {
-                question: "How much would you want to have the superpower of reading the other person’s mind at all times? (1 = Not at all, 10 = Definitely)",
+                question: "How much would you want to have the superpower of reading the other person’s mind at all times?<br>(1 = Not at all, 10 = Definitely)",
                 options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                 answerIndex: 1 // My answer: 2
             }
         ];
 
         let currentQuestionIndex = 0;
-        let score = 0;
+        let totalDifference = 0; // Renamed score to totalDifference for clarity
         let userAnswers = new Array(questions.length).fill(null);
 
         const questionText = document.getElementById('question-text');
@@ -208,7 +231,7 @@
 
         function loadQuestion() {
             const q = questions[currentQuestionIndex];
-            questionText.textContent = q.question;
+            questionText.innerHTML = q.question; // Changed to innerHTML to render <br>
             optionsContainer.innerHTML = '';
             q.options.forEach((option, index) => {
                 const label = document.createElement('label');
@@ -220,8 +243,10 @@
                 input.addEventListener('change', (event) => {
                     userAnswers[currentQuestionIndex] = parseInt(event.target.value);
                 });
+                const span = document.createElement('span');
+                span.textContent = option;
                 label.appendChild(input);
-                label.appendChild(document.createTextNode(option));
+                label.appendChild(span);
                 optionsContainer.appendChild(label);
             });
 
@@ -231,10 +256,11 @@
         }
 
         function calculateScore() {
-            score = 0;
+            totalDifference = 0;
             for (let i = 0; i < questions.length; i++) {
-                if (userAnswers[i] === questions[i].answerIndex) {
-                    score++;
+                if (userAnswers[i] !== null) { // Only calculate for answered questions
+                    // Calculate absolute difference between my answer index and their answer index
+                    totalDifference += Math.abs(questions[i].answerIndex - userAnswers[i]);
                 }
             }
             displayResults();
@@ -247,19 +273,15 @@
             let message = '';
             let code = '';
 
-            // Adjusted scoring logic for 10 questions
-            if (score === questions.length) {
-                message = `Wow! You got all ${score} questions correct! We are perfectly in sync! 💖`;
+            if (totalDifference <= 10) {
+                message = `We're perfectly in sync! 💞 Your total difference score is ${totalDifference}!`;
                 code = 'V';
-            } else if (score >= questions.length - 2) { // 8 or more correct
-                message = `Amazing! You got ${score} out of ${questions.length} questions right! We're definitely on the same wavelength!`;
-                code = 'V';
-            } else if (score >= questions.length / 2) { // 5 or more correct
-                message = `Good job! You got ${score} out of ${questions.length} questions right. We're pretty close!`;
+            } else if (totalDifference > 10 && totalDifference <= 30) {
+                message = `Pretty close! 😉 Your total difference score is ${totalDifference}.`;
                 code = 'V';
             } else {
-                message = `You got ${score} out of ${questions.length} questions right. Looks like we need to spend more time getting on the same wavelength! 😉`;
-                code = ''; // No code if score is too low
+                message = `Opposites attract! ❤️ Your total difference score is ${totalDifference}. Looks like we have some fun differences to explore! 😉`;
+                code = ''; // No code if totalDifference is too high
             }
 
             resultMessage.textContent = message;
